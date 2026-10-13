@@ -2,14 +2,14 @@
 
 A static, responsive website for **FeedbackGo**, designed to be hosted by **GitHub Pages**. APK binaries are hosted by **GitHub Releases**. No Node.js or website hosting service is required.
 
-## 1. Create a public distribution repository
+## 1. Use your existing public distribution repository
 
-Create a GitHub repository named **`feedbackgo-download`** under **`dev-rohit-gupta`**. This can be separate from your Expo app repository: only the website and published APK releases need to be public.
+Use the existing public repository **`dev-rohit-gupta/auto-feedback`**. Keep the website in its `docs/` folder, and publish the APK releases in this **same repository**. There is no need to create a new repository.
 
-Copy the contents of this ZIP to the new repository root:
+Place the included files in your existing `auto-feedback` repository root (merge rather than deleting existing files):
 
 ```text
-feedbackgo-download/
+auto-feedback/
 ├── README.md
 └── docs/
     ├── .nojekyll
@@ -22,7 +22,7 @@ feedbackgo-download/
         └── favicon.png
 ```
 
-If you choose a different GitHub username or repository, edit only `OWNER` and `REPO` at the top of **`docs/main.js`**.
+The release lookup and website links are already configured for `dev-rohit-gupta/auto-feedback`. If you rename the repository in the future, update both `docs/main.js` and the fallback links in `docs/index.html`.
 
 ## 2. Enable GitHub Pages
 
@@ -30,7 +30,7 @@ If you choose a different GitHub username or repository, edit only `OWNER` and `
 2. Open the GitHub repository's **Settings → Pages**.
 3. Under **Build and deployment**, choose **Deploy from a branch**.
 4. Select `main` and `/docs`, then click **Save**.
-5. Open `https://dev-rohit-gupta.github.io/feedbackgo-download/` (your URL changes if the owner/repo changes).
+5. Open `https://dev-rohit-gupta.github.io/auto-feedback/` (your URL changes if the owner/repo changes).
 
 ## 3. Create a GitHub Release
 
@@ -40,13 +40,13 @@ If you choose a different GitHub username or repository, edit only `OWNER` and `
 4. Create a tag such as `v1.0.0`, add a clear release title and notes, then attach `FeedbackGo.apk`.
 5. Publish a **normal (non-draft, non-prerelease)** release.
 
-The site's script requests `https://api.github.com/repos/dev-rohit-gupta/feedbackgo-download/releases/latest`. It selects `FeedbackGo.apk` when present, otherwise the first `.apk` asset. The button then downloads the actual binary directly from GitHub's `browser_download_url`.
+The site's script requests `https://api.github.com/repos/dev-rohit-gupta/auto-feedback/releases/latest`. It selects `FeedbackGo.apk` when present, otherwise the first `.apk` asset. The button then downloads the actual binary directly from GitHub's `browser_download_url`.
 
-The download remains functional even if GitHub's API temporarily fails: the buttons fall back to the repository's Releases page.
+If the API fails, the buttons fall back to the repository's Releases page. That page may itself lack APKs until a release is actually published.
 
 **Direct link (after your first public release):**
 
-`https://github.com/dev-rohit-gupta/feedbackgo-download/releases/latest/download/FeedbackGo.apk`
+`https://github.com/dev-rohit-gupta/auto-feedback/releases/latest/download/FeedbackGo.apk`
 
 ## 4. Releasing future versions
 
@@ -54,7 +54,13 @@ Publish a new release, e.g. `v1.0.1`, with a newly signed `FeedbackGo.apk`. The 
 
 **Important for updates:** Android app upgrades must use the same Android application ID and compatible signing key, and increase `versionCode`. Save your signing credentials securely; don't upload signing keys, source `.env` files, or credentials to the public distribution repository.
 
-## 5. Testing locally
+## 5. Updating the already-live GitHub Pages site
+
+Commit and push `docs/index.html`, `docs/main.js`, the `README.md`, and `tests/site.test.cjs` to the existing repository. GitHub Pages must be configured to deploy from the branch containing `docs/`. After deployment, hard-refresh the page with `Ctrl+Shift+R` or open an incognito window to bypass cached JavaScript.
+
+**Important:** A published release with only source archives is not enough; attach a signed, installable `.apk` as a release asset. Until then, the site intentionally shows **View GitHub releases**.
+
+## 6. Testing locally
 
 From the repository root, run:
 

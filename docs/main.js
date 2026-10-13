@@ -3,7 +3,7 @@
 // Publish website + GitHub Releases in this public repository.
 // If you choose a different repository, change OWNER and REPO only.
 const OWNER = "dev-rohit-gupta";
-const REPO = "feedbackgo-download";
+const REPO = "auto-feedback";
 
 const repository = `https://github.com/${OWNER}/${REPO}`;
 const releasesPage = `${repository}/releases`;
