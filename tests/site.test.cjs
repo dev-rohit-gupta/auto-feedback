@@ -73,3 +73,15 @@ test('published website has correct static fallback links and cache-busted loade
   assert.ok(html.includes('main.js?v=repo-fix-1'));
   assert.equal(html.includes('/feedbackgo-download/'), false);
 });
+
+
+test('hero preview stays stationary and browser does not force animated scrolling', () => {
+  const css = fs.readFileSync(path.join(__dirname, '../docs/styles.css'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '../docs/index.html'), 'utf8');
+  assert.match(css, /html\{scroll-behavior:auto\}/);
+  assert.doesNotMatch(css, /@keyframes\s+float(?:Phone|Card)\b/);
+  assert.doesNotMatch(css, /animation:\s*float(?:Phone|Card)\b/);
+  assert.doesNotMatch(css, /animation-delay:-2s/);
+  assert.match(css, /\.phone\{[^}]*transform:rotate\(4deg\)/);
+  assert.ok(html.includes('styles.css?v=motion-fix-1'));
+});
